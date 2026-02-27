@@ -1,36 +1,53 @@
 const API="http://localhost:3000/products";
+let cart=[];
 
-function load(){
+function loadProducts(){
 fetch(API)
 .then(r=>r.json())
 .then(data=>{
-const list=document.getElementById("list");
-list.innerHTML="";
+const div=document.getElementById("products");
+div.innerHTML="";
 data.forEach(p=>{
-list.innerHTML+=`
-<li>
-${p.name} ₱${p.price} (${p.stock})
-<button onclick="del(${p.id})">Delete</button>
+div.innerHTML+=`
+<button onclick='addToCart(${JSON.stringify(p)})'>
+${p.name}<br>₱${p.price}
+</button>`;
+});
+});
+}
+
+function addToCart(product){
+const found=cart.find(i=>i.id===product.id);
+if(found){found.qty++;}
+else{cart.push({...product,qty:1});}
+renderCart();
+}
+
+function renderCart(){
+const ul=document.getElementById("cart");
+ul.innerHTML="";
+let total=0;
+
+cart.forEach(item=>{
+total+=item.price*item.qty;
+ul.innerHTML+=`
+<li>${item.name} x${item.qty}
+<button onclick="remove(${item.id})">❌</button>
 </li>`;
 });
-});
+
+document.getElementById("total").innerText=total;
 }
 
-function add(){
-fetch(API,{
-method:"POST",
-headers:{"Content-Type":"application/json"},
-body:JSON.stringify({
-name:name.value,
-price:price.value,
-stock:stock.value
-})
-}).then(load);
+function remove(id){
+cart=cart.filter(i=>i.id!==id);
+renderCart();
 }
 
-function del(id){
-fetch(API+"/"+id,{method:"DELETE"})
-.then(load);
+function checkout(){
+alert("Sale saved ₱"+document.getElementById("total").innerText);
+cart=[];
+renderCart();
 }
 
-load();
+loadProducts();
