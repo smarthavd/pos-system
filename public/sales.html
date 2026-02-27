@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>PRO POS</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h2>POS</h2>
+<button onclick="location.href='index.html'">Dashboard</button>
+<button>Sales</button>
+<button>Reports</button>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<h2>Products</h2>
+<div id="products" class="grid"></div>
+
+</div>
+
+<!-- CART -->
+<div class="cart">
+<h2>Cart</h2>
+<ul id="cart"></ul>
+
+<h1>₱ <span id="total">0</span></h1>
+<button class="checkout" onclick="checkout()">Checkout</button>
+</div>
+
+</div>
+
+<script src="sales.js"></script>
+</body>
+</html>
